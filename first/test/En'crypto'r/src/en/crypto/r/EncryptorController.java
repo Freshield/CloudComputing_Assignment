@@ -5,6 +5,7 @@
  */
 package en.crypto.r;
 
+//import java.awt.datatransfer.Clipboard;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -13,6 +14,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import java.io.*;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 
 /**
  *
@@ -132,9 +135,21 @@ public class EncryptorController implements Initializable {
     @FXML
     private void clearMethod(ActionEvent event){
         
+        text01.setText("");
+        text02.setText("");
+        e = null;
+        inputText = "";
+        outputText = "";
+        label03.setText("Cleared");
+        
     }
     @FXML
     private void copyMethod(ActionEvent event){
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        content.putString(outputText);
+        clipboard.setContent(content);
+        label03.setText("Copied");
         
     }
     
