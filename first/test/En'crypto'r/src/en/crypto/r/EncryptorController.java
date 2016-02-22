@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 /**
  *
@@ -18,9 +19,27 @@ import javafx.scene.control.Label;
  */
 public class EncryptorController implements Initializable {
     
+    Encrypt e;
+    String inputText;
+    String outputText;
+    
     @FXML
     private Label label03;
+    @FXML
+    private TextField text01;
+    @FXML
+    private TextField text02;
     
+    public EncryptorController(){
+        
+        text01 = new TextField();
+        text02 = new TextField();
+        e = null;
+        inputText = "";
+        outputText = "";
+        
+        
+    }
     @FXML
     private void newMethod(ActionEvent event) {
         label03.setText("This is new Button.");
