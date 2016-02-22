@@ -13,6 +13,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
+import java.io.*;
+import java.net.*;
 
 /**
  *
@@ -33,8 +35,30 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void connectMethod(ActionEvent event) {
-        System.out.println("You clicked me!");
-        show_area.appendText("\nHello world");
+        try{
+            String IP_addr = ip_text.getText();
+            int port_num = 0;
+            try{
+                port_num = Integer.parseInt(port_text.getText());
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+            
+            
+            Socket s = new Socket(IP_addr,port_num);
+            
+            InputStreamReader streamReader = new InputStreamReader(s.getInputStream());
+            BufferedReader reader = new BufferedReader(streamReader);
+            
+            String message = reader.readLine();
+            show_area.appendText("\n"+message);
+            
+            
+            
+            
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
     }
     @FXML
     private void yesMethod(ActionEvent event) {
