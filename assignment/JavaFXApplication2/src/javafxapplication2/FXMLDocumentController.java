@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import java.io.*;
 import java.net.*;
+import org.json.*;
 
 /**
  *
@@ -50,8 +51,14 @@ public class FXMLDocumentController implements Initializable {
             InputStreamReader streamReader = new InputStreamReader(s.getInputStream());
             BufferedReader reader = new BufferedReader(streamReader);
             
-            String message = reader.readLine();
-            show_area.appendText("\n"+message);
+            //String message = reader.readLine().toString();
+            JSONObject obj = new JSONObject(reader.readLine());
+            //JSONObject getter = new JSONObject();
+           // getter.put("obj",message);
+            
+            
+            
+            show_area.appendText("\n"+obj.getString("age"));
             
             
             
