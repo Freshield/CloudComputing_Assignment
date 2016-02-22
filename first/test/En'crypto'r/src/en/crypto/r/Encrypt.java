@@ -17,6 +17,10 @@ public class Encrypt {
         setCode();
     }
     
+    public Encrypt(String s){
+        code = s.toCharArray();
+    }
+    
     public void setCode(){
         
         int a = 0;

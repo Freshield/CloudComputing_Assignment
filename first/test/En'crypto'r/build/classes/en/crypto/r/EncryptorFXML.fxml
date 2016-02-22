@@ -6,18 +6,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="431.0" prefWidth="1212.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="en.crypto.r.EncryptorController">
+<AnchorPane id="AnchorPane" prefHeight="432.0" prefWidth="1390.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="en.crypto.r.EncryptorController">
     <children>
         <Label fx:id="label01" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="14.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="131.0" text="Input:" />
       <Label fx:id="label02" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="88.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="131.0" text="Output:" />
       <TextField fx:id="text01" layoutX="244.0" layoutY="14.0" prefHeight="59.0" prefWidth="881.0" />
       <TextField fx:id="text02" layoutX="244.0" layoutY="88.0" prefHeight="59.0" prefWidth="881.0" />
-      <Button fx:id="loadbutton" layoutX="227.0" layoutY="194.0" onAction="#loadMethod" prefHeight="74.0" prefWidth="169.0" text="Load" />
+      <Button fx:id="loadbutton" layoutX="413.0" layoutY="194.0" onAction="#loadMethod" prefHeight="74.0" prefWidth="169.0" text="Load" />
       <Button fx:id="newbutton" layoutX="42.0" layoutY="194.0" onAction="#newMethod" prefHeight="74.0" prefWidth="169.0" text="New" />
-      <Button fx:id="encodebutton" layoutX="412.0" layoutY="194.0" onAction="#encodeMethod" prefHeight="74.0" prefWidth="169.0" text="Encode" />
-      <Button fx:id="decodebutton" layoutX="600.0" layoutY="194.0" onAction="#decodeMethod" prefHeight="74.0" prefWidth="169.0" text="Decode" />
-      <Button fx:id="clearbutton" layoutX="786.0" layoutY="194.0" onAction="#clearMethod" prefHeight="74.0" prefWidth="169.0" text="Clear" />
-      <Button fx:id="copybutton" layoutX="974.0" layoutY="194.0" onAction="#copyMethod" prefHeight="74.0" prefWidth="169.0" text="Copy" />
+      <Button fx:id="encodebutton" layoutX="598.0" layoutY="194.0" onAction="#encodeMethod" prefHeight="74.0" prefWidth="169.0" text="Encode" />
+      <Button fx:id="decodebutton" layoutX="786.0" layoutY="194.0" onAction="#decodeMethod" prefHeight="74.0" prefWidth="169.0" text="Decode" />
+      <Button fx:id="clearbutton" layoutX="972.0" layoutY="194.0" onAction="#clearMethod" prefHeight="74.0" prefWidth="169.0" text="Clear" />
+      <Button fx:id="copybutton" layoutX="1160.0" layoutY="194.0" onAction="#copyMethod" prefHeight="74.0" prefWidth="169.0" text="Copy" />
       <Label fx:id="label03" layoutX="42.0" layoutY="307.0" minHeight="16" minWidth="69" prefHeight="59.0" prefWidth="1098.0" text="Something happened..." />
+      <Button fx:id="savebutton" layoutX="229.0" layoutY="194.0" onAction="#saveMethod" prefHeight="74.0" prefWidth="169.0" text="Save" />
     </children>
 </AnchorPane>
