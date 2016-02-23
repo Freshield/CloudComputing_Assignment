@@ -51,6 +51,9 @@ public class FXMLDocumentController implements Initializable {
                 ex.printStackTrace();
             }
             
+            game_value = 0;
+            game_level = 0;
+            show_area.setText("");
             
             s = new Socket(IP_addr,port_num);
             
@@ -78,14 +81,62 @@ public class FXMLDocumentController implements Initializable {
     }
     @FXML
     private void yesMethod(ActionEvent event) {
-        writer.println("0");
+        
+        switch(game_level){
+            
+            
+            
+            case 1:game_value += 16;
+            break;         
+            
+            case 2:game_value += 8;
+            break;         
+            
+            case 3:game_value += 4;
+            break;         
+            
+            case 4:game_value += 2;
+            break;         
+            
+            default:
+                break;
+        }
+        
+        game_level += 1;
+        JSONObject sender = new JSONObject();
+        
+        sender.put("client", new Integer(game_value).toString());
+        
+        writer.println(sender);
+        System.out.println(sender);
         writer.flush();
+        
         show_area.appendText("YES"+"\n");
     }
     @FXML
     private void noMethod(ActionEvent event) {
-        System.out.println("You clicked me!");
-        show_area.appendText("Hello world\n");
+        if(game_level != 0){
+            game_value += 1;
+            game_level += 1;
+            
+        }
+        
+        JSONObject sender = new JSONObject();
+        
+        sender.put("client", new Integer(game_value).toString());
+        
+        writer.println(sender);
+        System.out.println(sender);
+        writer.flush();
+        
+        show_area.appendText("NO"+"\n");
+        if(game_level == 0){
+            
+           
+           game_level += 1;
+            
+        }
+        
     }
     
     @Override
@@ -102,7 +153,7 @@ public class FXMLDocumentController implements Initializable {
                 
                 while((message = reader.readLine()) != null){
                     JSONObject obj = new JSONObject(message);
-                    show_area.appendText(obj.getString("value")+"\n");
+                    show_area.appendText(obj.getString("server")+"\n");
                 }
                 
             }catch(Exception ex){
