@@ -34,6 +34,12 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextArea show_area;
     
+    private BufferedReader reader;
+    private PrintWriter writer;
+    private int game_value = 0;
+    private int game_level = 0;
+    private Socket s;
+    
     @FXML
     private void connectMethod(ActionEvent event) {
         try{
@@ -46,19 +52,22 @@ public class FXMLDocumentController implements Initializable {
             }
             
             
-            Socket s = new Socket(IP_addr,port_num);
+            s = new Socket(IP_addr,port_num);
             
             InputStreamReader streamReader = new InputStreamReader(s.getInputStream());
-            BufferedReader reader = new BufferedReader(streamReader);
+            reader = new BufferedReader(streamReader);
+            writer = new PrintWriter(s.getOutputStream());
             
+            Thread readerThread = new Thread(new IncomingReader());
+            readerThread.start();
             //String message = reader.readLine().toString();
-            JSONObject obj = new JSONObject(reader.readLine());
+            //JSONObject obj = new JSONObject(reader.readLine());
             //JSONObject getter = new JSONObject();
            // getter.put("obj",message);
             
             
             
-            show_area.appendText("\n"+obj.getString("age"));
+            //show_area.appendText(obj.getString("age")+"\n");
             
             
             
@@ -69,18 +78,37 @@ public class FXMLDocumentController implements Initializable {
     }
     @FXML
     private void yesMethod(ActionEvent event) {
-        System.out.println("You clicked me!");
-        show_area.appendText("\nHello world");
+        writer.println("0");
+        writer.flush();
+        show_area.appendText("YES"+"\n");
     }
     @FXML
     private void noMethod(ActionEvent event) {
         System.out.println("You clicked me!");
-        show_area.appendText("\nHello world");
+        show_area.appendText("Hello world\n");
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+    
+    public class IncomingReader implements Runnable{
+        
+        public void run(){
+            
+            String message;
+            try{
+                
+                while((message = reader.readLine()) != null){
+                    JSONObject obj = new JSONObject(message);
+                    show_area.appendText(obj.getString("value")+"\n");
+                }
+                
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+    }
     
 }
