@@ -5,6 +5,7 @@
  */
 package javafxapplication2;
 
+import javax.swing.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -33,6 +34,7 @@ public class FXMLDocumentController implements Initializable {
     private TextField port_text;
     @FXML
     private TextArea show_area;
+    
     
     private BufferedReader reader;
     private PrintWriter writer;
@@ -136,6 +138,12 @@ public class FXMLDocumentController implements Initializable {
            game_level += 1;
             
         }
+        //new JDialog(new javax.swing.JFrame(), true).setVisible(true);
+        
+    }
+    
+    @FXML
+    private void closeMethod(ActionEvent event) {
         
     }
     
