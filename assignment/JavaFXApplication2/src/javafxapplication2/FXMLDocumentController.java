@@ -41,6 +41,7 @@ public class FXMLDocumentController implements Initializable {
     private int game_value = 0;
     private int game_level = 0;
     private Socket s;
+    JSONObject receiver;
     
     @FXML
     private void connectMethod(ActionEvent event) {
@@ -114,6 +115,8 @@ public class FXMLDocumentController implements Initializable {
         writer.flush();
         
         show_area.appendText("YES"+"\n");
+        System.out.println("yes"+game_level);
+        
     }
     @FXML
     private void noMethod(ActionEvent event) {
@@ -138,12 +141,9 @@ public class FXMLDocumentController implements Initializable {
            game_level += 1;
             
         }
-        //new JDialog(new javax.swing.JFrame(), true).setVisible(true);
+        System.out.println("no"+game_level);
         
-    }
-    
-    @FXML
-    private void closeMethod(ActionEvent event) {
+        
         
     }
     
@@ -160,8 +160,24 @@ public class FXMLDocumentController implements Initializable {
             try{
                 
                 while((message = reader.readLine()) != null){
-                    JSONObject obj = new JSONObject(message);
-                    show_area.appendText(obj.getString("server")+"\n");
+                    receiver = new JSONObject(message);
+                    show_area.appendText(receiver.getString("server")+"\n");
+                    System.out.println("server"+game_level);
+                    
+                    if(game_level >= 5){
+                        
+                        System.out.println(receiver.getString("server"));
+                        
+                        final_answer test = new final_answer(receiver.getString("server"));
+                        test.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        test.setLocationRelativeTo(null);
+                        test.setVisible(true);
+                        show_area.setText("Let's play again~");
+                        game_level = 0;
+                        game_value = 0;
+                        receiver = null;
+                        
+                    }
                 }
                 
             }catch(Exception ex){

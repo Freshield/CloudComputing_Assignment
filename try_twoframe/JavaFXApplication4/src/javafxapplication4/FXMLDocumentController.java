@@ -27,9 +27,7 @@ public class FXMLDocumentController implements Initializable {
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
         label.setText("Hello World!");
-        newframe test = new newframe();
-        mypanel pan = new mypanel();
-        test.getContentPane().add(BorderLayout.NORTH,pan);
+        newframe test = new newframe("hello");
         test.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         test.setLocationRelativeTo(null);
         test.setVisible(true);
