@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: probuf_server.Server
+Class-Path: . lib/protobuf-java-2.5.0.jar com/protobuf/AnimalList.java
+Created-By: YY
