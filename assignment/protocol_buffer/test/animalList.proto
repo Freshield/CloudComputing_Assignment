@@ -1,0 +1,9 @@
+package serverbuf;
+option java_package = "com.protobuf"; 
+option java_outer_classname = "AnimalList"; 
+
+message Animal {
+  required string name = 1;
+  required string id = 2;
+  }
+  

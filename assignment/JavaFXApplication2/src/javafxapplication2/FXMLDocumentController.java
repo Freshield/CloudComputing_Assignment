@@ -16,7 +16,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import java.io.*;
 import java.net.*;
-import org.json.*;
+//import org.json.*;
+
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.protobuf.AnimalList;
+
 
 /**
  *
@@ -36,12 +40,13 @@ public class FXMLDocumentController implements Initializable {
     private TextArea show_area;
     
     
-    private BufferedReader reader;
-    private PrintWriter writer;
+    
+    private DataOutputStream doutput;
+    private DataInputStream dinput;
     private int game_value = 0;
     private int game_level = 0;
     private Socket s;
-    JSONObject receiver;
+    
     
     @FXML
     private void connectMethod(ActionEvent event) {
@@ -58,25 +63,14 @@ public class FXMLDocumentController implements Initializable {
             game_level = 0;
             show_area.setText("");
             
+            //new socket
             s = new Socket(IP_addr,port_num);
             
-            InputStreamReader streamReader = new InputStreamReader(s.getInputStream());
-            reader = new BufferedReader(streamReader);
-            writer = new PrintWriter(s.getOutputStream());
+            dinput = new DataInputStream(s.getInputStream());
+            doutput = new DataOutputStream(s.getOutputStream());
             
             Thread readerThread = new Thread(new IncomingReader());
             readerThread.start();
-            //String message = reader.readLine().toString();
-            //JSONObject obj = new JSONObject(reader.readLine());
-            //JSONObject getter = new JSONObject();
-           // getter.put("obj",message);
-            
-            
-            
-            //show_area.appendText(obj.getString("age")+"\n");
-            
-            
-            
             
         }catch(IOException ex){
             ex.printStackTrace();
@@ -106,15 +100,20 @@ public class FXMLDocumentController implements Initializable {
         }
         
         game_level += 1;
-        JSONObject sender = new JSONObject();
-        
-        sender.put("client", new Integer(game_value).toString());
-        
-        writer.println(sender);
-        System.out.println(sender);
-        writer.flush();
-        
+        try{
+            AnimalList.Animal.Builder builder = AnimalList.Animal.newBuilder();
+	    builder.setId("client");
+	    builder.setName(new Integer(game_value).toString());
+	    AnimalList.Animal animal = builder.build();
+            byte[] outter = animal.toByteArray();
+            doutput.write(outter);
+            System.out.println("yes"+animal.toString());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        if(game_level > 1){
         show_area.appendText("YES"+"\n");
+        }
         System.out.println("yes"+game_level);
         
     }
@@ -126,15 +125,18 @@ public class FXMLDocumentController implements Initializable {
             
         }
         
-        JSONObject sender = new JSONObject();
+        try{
+            AnimalList.Animal.Builder builder = AnimalList.Animal.newBuilder();
+	    builder.setId("client");
+	    builder.setName(new Integer(game_value).toString());
+	    AnimalList.Animal animal = builder.build();
+	    byte[] outter = animal.toByteArray();
+            doutput.write(outter);
+            System.out.println("no"+animal.toString());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         
-        sender.put("client", new Integer(game_value).toString());
-        
-        writer.println(sender);
-        System.out.println(sender);
-        writer.flush();
-        
-        show_area.appendText("NO"+"\n");
         if(game_level == 0){
             
            
@@ -142,8 +144,9 @@ public class FXMLDocumentController implements Initializable {
             
         }
         System.out.println("no"+game_level);
-        
-        
+        if(game_level > 1){
+        show_area.appendText("NO"+"\n");
+        }
         
     }
     
@@ -157,32 +160,52 @@ public class FXMLDocumentController implements Initializable {
         public void run(){
             
             String message;
+            
+            
             try{
                 
-                while((message = reader.readLine()) != null){
-                    receiver = new JSONObject(message);
-                    show_area.appendText(receiver.getString("server")+"\n");
-                    System.out.println("server"+game_level);
+		System.out.println("thread waitting data");
+                
+		byte len[] = new byte[1024];
+                int count; 
+            
+		while((count = dinput.read(len)) != 0){
+			System.out.println("thread into writting");
+
+	                byte[] temp = new byte[count];
+	                
+	                for (int i = 0; i < count; i++) {   
+	                    
+	                        temp[i] = len[i];                              
+	                } 
+			//change to animal type
+			AnimalList.Animal getanimal = AnimalList.Animal.parseFrom(temp);
+			//get id
+                        
+			message = getanimal.getName().toString();
+                        show_area.appendText(message+"\n");
+			
+                        System.out.println("thread server"+game_level);
                     
-                    if(game_level >= 5){
+                        if(game_level >= 5){
                         
-                        System.out.println(receiver.getString("server"));
+                        System.out.println("thread"+message);
                         
-                        final_answer test = new final_answer(receiver.getString("server"));
+                        final_answer test = new final_answer(message);
                         test.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                         test.setLocationRelativeTo(null);
                         test.setVisible(true);
-                        show_area.setText("Let's play again~");
+                        show_area.setText("Let's play again~\n");
                         game_level = 0;
                         game_value = 0;
-                        receiver = null;
+                        
                         
                     }
                 }
-                
             }catch(Exception ex){
                 ex.printStackTrace();
             }
+            
         }
     }
     
